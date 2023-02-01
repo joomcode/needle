@@ -6,7 +6,7 @@
 //  Copyright © 2020 Joom. All rights reserved.
 //
 
-public struct Nothing {
+struct Nothing {
     public init() {}
 }
 

@@ -8,27 +8,27 @@
 
 import Foundation
 
-public enum AssemblyStoragePolicy {
+enum AssemblyStoragePolicy {
     case strong
     case weak
 }
 
-public protocol AssemblyStorageProtocol {
+protocol AssemblyStorageProtocol {
     typealias StoragePolicy = AssemblyStoragePolicy
 
     func singleton<Args, Object>(function: StaticString, storage: StoragePolicy, args: Args, factory: () -> Object) -> Object
         where Object: AnyObject, Args: Hashable
 }
 
-public final class AssemblyStorage {
+final class AssemblyStorage {
     private lazy var strongObjects: NSMapTable<AnyObject, AnyObject> = .strongToStrongObjects()
     private lazy var weakObjects: NSMapTable<AnyObject, AnyObject> = .strongToWeakObjects()
 
-    public init() {}
+    init() {}
 }
 
 extension AssemblyStorage: AssemblyStorageProtocol {
-    public func singleton<Args, Object>(function: StaticString, storage: StoragePolicy, args: Args, factory: () -> Object) -> Object
+    func singleton<Args, Object>(function: StaticString, storage: StoragePolicy, args: Args, factory: () -> Object) -> Object
         where Object: AnyObject, Args: Hashable
     {
         let key = Key(function: function, args: args, objectType: Object.self)
@@ -52,7 +52,7 @@ extension AssemblyStorage: AssemblyStorageProtocol {
     }
 }
 
-public extension AssemblyStorageProtocol {
+extension AssemblyStorageProtocol {
     func weakSingleton<Args, Object>(function: StaticString = #function, args: Args, factory: () -> Object) -> Object
         where Object: AnyObject, Args: Hashable
     {
@@ -78,7 +78,7 @@ public extension AssemblyStorageProtocol {
     }
 }
 
-private final class Key<Args, Object>: NSObject where Object: AnyObject, Args: Hashable {
+final class Key<Args, Object>: NSObject where Object: AnyObject, Args: Hashable {
     // MARK: - NSObject properties
 
     override var hash: Int {
