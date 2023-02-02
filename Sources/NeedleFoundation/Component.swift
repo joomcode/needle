@@ -135,14 +135,6 @@ open class Component<DependencyType>: Scope {
     /// - parameter factory: The closure to construct the dependency object.
     /// - returns: The dependency object instance.
     public final func shared<T>(__function: String = #function, _ factory: () -> T) -> T {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
         // Additional nil coalescing is needed to mitigate a Swift bug appearing
         // in Xcode 10. see https://bugs.swift.org/browse/SR-8704. Without this
         // measure, calling `shared` from a function that returns an optional type
@@ -184,15 +176,7 @@ open class Component<DependencyType>: Scope {
     /// - parameter factory: The closure to construct the dependency object.
     /// - returns: The dependency object instance.
     public final func singleton<Object>(function: StaticString = #function, _ factory: () -> Object) -> Object where Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-        
-        return storage.singleton(function: function, factory: factory)
+        storage.singleton(function: function, factory: factory)
     }
 
     public final func singleton<Args, Object>(
@@ -200,27 +184,11 @@ open class Component<DependencyType>: Scope {
         args: Args,
         _ factory: () -> Object
     ) -> Object where Args: Hashable, Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.singleton(function: function, args: args, factory: factory)
+        storage.singleton(function: function, args: args, factory: factory)
     }
 
     public final func weakSingleton<Object>(function: StaticString = #function, _ factory: () -> Object) -> Object where Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.weakSingleton(function: function, factory: factory)
+        storage.weakSingleton(function: function, factory: factory)
     }
 
     public final func weakSingleton<Args, Object>(
@@ -228,20 +196,11 @@ open class Component<DependencyType>: Scope {
         args: Args,
         _ factory: () -> Object
     ) -> Object where Args: Hashable, Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.weakSingleton(function: function, args: args, factory: factory)
+        storage.weakSingleton(function: function, args: args, factory: factory)
     }
 
     // MARK: - Private
 
-    private let sharedInstanceLock = NSRecursiveLock()
     private var sharedInstances = [String: Any]()
     private let storage = AssemblyStorage()
     private lazy var name: String = {
@@ -314,14 +273,6 @@ open class Component<DependencyType>: Scope {
     /// - parameter factory: The closure to construct the dependency object.
     /// - returns: The dependency object instance.
     public final func shared<T>(__function: String = #function, _ factory: () -> T) -> T {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
         // Additional nil coalescing is needed to mitigate a Swift bug appearing
         // in Xcode 10. see https://bugs.swift.org/browse/SR-8704. Without this
         // measure, calling `shared` from a function that returns an optional type
@@ -350,15 +301,7 @@ open class Component<DependencyType>: Scope {
     /// - parameter factory: The closure to construct the dependency object.
     /// - returns: The dependency object instance.
     public final func singleton<Object>(function: StaticString = #function, _ factory: () -> Object) -> Object where Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.singleton(function: function, factory: factory)
+        storage.singleton(function: function, factory: factory)
     }
 
     public final func singleton<Args, Object>(
@@ -366,27 +309,11 @@ open class Component<DependencyType>: Scope {
         args: Args,
         _ factory: () -> Object
     ) -> Object where Args: Hashable, Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.singleton(function: function, args: args, factory: factory)
+        storage.singleton(function: function, args: args, factory: factory)
     }
 
     public final func weakSingleton<Object>(function: StaticString = #function, _ factory: () -> Object) -> Object where Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.weakSingleton(function: function, factory: factory)
+        storage.weakSingleton(function: function, factory: factory)
     }
 
     public final func weakSingleton<Args, Object>(
@@ -394,20 +321,11 @@ open class Component<DependencyType>: Scope {
         args: Args,
         _ factory: () -> Object
     ) -> Object where Args: Hashable, Object: AnyObject {
-        // Use function name as the key, since this is unique per component
-        // class. At the same time, this is also 150 times faster than
-        // interpolating the type to convert to string, `"\(T.self)"`.
-        sharedInstanceLock.lock()
-        defer {
-            sharedInstanceLock.unlock()
-        }
-
-        return storage.weakSingleton(function: function, args: args, factory: factory)
+        storage.weakSingleton(function: function, args: args, factory: factory)
     }
 
     // MARK: - Private
 
-    private let sharedInstanceLock = NSRecursiveLock()
     private var sharedInstances = [String: Any]()
     private let storage = AssemblyStorage()
     private lazy var name: String = {
